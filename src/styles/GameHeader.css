@@ -1,0 +1,12 @@
+.game-header {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	color: white;
+}
+
+.restart-btn {
+	outline: none;
+	cursor: pointer;
+	padding: 0.25rem 0.5rem;
+}

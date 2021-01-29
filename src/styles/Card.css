@@ -17,7 +17,7 @@
 .entire-card,
 .entire-card > .front,
 .entire-card > .back {
-	border-radius: 15px;
+	border-radius: 10px;
 	width: 260px;
 	height: 180px;
 }
@@ -46,9 +46,16 @@
 	transform: rotateY(180deg);
 }
 
-.back,
-.back-image {
+.back {
 	width: 100%;
 	height: 100%;
-	border-radius: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.back-image {
+	width: 95%;
+	height: 95%;
+	border-radius: 5px;
 }
