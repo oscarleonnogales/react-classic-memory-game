@@ -4,7 +4,6 @@ import GameHeader from './GameHeader';
 import CardContainer from './CardContainer';
 import '../styles/App.css';
 //images
-import dr650 from '../images/dr650.jpg';
 import drz400 from '../images/drz400.jpg';
 import fz07 from '../images/fz07.jpg';
 import goldwing from '../images/goldwing.jpg';
@@ -13,18 +12,19 @@ import husky701 from '../images/husky701.webp';
 import klr650 from '../images/klr650.jpg';
 import monster from '../images/monster1200.jpg';
 import ninja from '../images/ninja250.jpg';
-import r1 from '../images/r1.jpg';
+import cbr1000 from '../images/cbr1000.jpg';
 import sv650 from '../images/sv650.jpg';
 import xsr900 from '../images/xsr900.jpg';
+import tc250 from '../images/tc250.jpg';
 
 const importedBikes = [
 	{
 		id: uuid(),
-		src: dr650,
-		manufacturer: 'Suzuki',
-		model: 'DR650',
-		matched: false,
+		src: tc250,
+		manufacturer: 'Husqvarna',
+		model: 'TC250',
 		flipped: true,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -32,7 +32,7 @@ const importedBikes = [
 		manufacturer: 'Suzuki',
 		model: 'DRZ400',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -40,7 +40,7 @@ const importedBikes = [
 		manufacturer: 'Yamaha',
 		model: 'FZ-07',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -48,7 +48,7 @@ const importedBikes = [
 		manufacturer: 'Honda',
 		model: 'Goldwing',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -56,7 +56,7 @@ const importedBikes = [
 		manufacturer: 'Ducati',
 		model: 'Monster 1200S',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -64,7 +64,7 @@ const importedBikes = [
 		manufacturer: 'Suzuki',
 		model: 'GSXR-750',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -72,15 +72,15 @@ const importedBikes = [
 		manufacturer: 'Husqvarna',
 		model: '701 SM',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
-		src: r1,
-		manufacturer: 'Yamaha',
-		model: 'YZF-R1',
+		src: cbr1000,
+		manufacturer: 'Honda',
+		model: 'CBR1000RR',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -88,7 +88,7 @@ const importedBikes = [
 		manufacturer: 'Suzuki',
 		model: 'SV650',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -96,7 +96,7 @@ const importedBikes = [
 		manufacturer: 'Kawasaki',
 		model: 'KLR 650',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -104,7 +104,7 @@ const importedBikes = [
 		manufacturer: 'Yamaha',
 		model: 'XSR900',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 	{
 		id: uuid(),
@@ -112,7 +112,7 @@ const importedBikes = [
 		manufacturer: 'Kawasaki',
 		model: 'Ninja 250R',
 		flipped: true,
-		matched: false,
+		clickable: true,
 	},
 ];
 
@@ -134,8 +134,7 @@ function App() {
 			bikesCopy.push(bike);
 			bikesCopy.push(bikeTwo);
 		});
-		//Shuffle before setting the state
-		setBikes([...bikesCopy]);
+		setBikes([...shuffleCards(bikesCopy)]);
 	}, []);
 
 	function handleResetClick() {
@@ -152,12 +151,13 @@ function App() {
 		if (!clickingEnabled) return;
 		const selectedCard = bikes.find((bike) => bike.id === selectedID);
 
-		if (selectedCard.matched) return;
+		if (!selectedCard.clickable) return;
+		selectedCard.clickable = false;
 
 		if (cardToMatch != null) {
 			if (areEqual(selectedCard, cardToMatch)) {
-				selectedCard.matched = true;
-				cardToMatch.matched = true;
+				selectedCard.clickable = false;
+				cardToMatch.clickable = false;
 				if (playerOneTurn) setPlayerOneScore((prevScore) => prevScore + 1);
 				else setPlayerTwoScore((prevScore) => prevScore + 1);
 
@@ -168,9 +168,11 @@ function App() {
 					setPlayerOneTurn(!playerOneTurn);
 					selectedCard.flipped = true;
 					cardToMatch.flipped = true;
+					selectedCard.clickable = true;
+					cardToMatch.clickable = true;
 					setCardToMatch(null);
 					setClickingEnabled(true);
-				}, 2000);
+				}, 1500);
 			}
 		} else {
 			setCardToMatch(selectedCard);
@@ -184,7 +186,7 @@ function App() {
 	function unmatchAllCards() {
 		const bikesCopy = [...bikes];
 		bikesCopy.forEach((bike) => {
-			bike.matched = false;
+			bike.clickable = true;
 			bike.flipped = true;
 		});
 		setBikes([...bikesCopy]);
@@ -218,6 +220,11 @@ function App() {
 		<GameContext.Provider value={gameContextValue}>
 			<GameHeader></GameHeader>
 			<CardContainer></CardContainer>
+			<div className="reset-btn-containr">
+				<button className="restart-btn" onClick={() => handleResetClick()}>
+					Restart Game
+				</button>
+			</div>
 		</GameContext.Provider>
 	);
 }

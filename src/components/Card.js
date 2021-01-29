@@ -15,7 +15,7 @@ class Card extends React.Component {
 				className={`entire-card ${this.props.bike.flipped ? 'flipped' : ''}`}
 				onClick={() => {
 					if (!this.props.clickingEnabled) return;
-					if (!this.props.bike.matched) {
+					if (this.props.bike.clickable) {
 						this.props.bike.flipped = !this.props.bike.flipped;
 						this.forceUpdate();
 						this.props.handleCardSelection(this.props.bike.id);

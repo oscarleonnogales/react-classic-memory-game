@@ -5,22 +5,34 @@ body {
 * {
 	font-family: sans-serif;
 }
-/* 
-.scores-container {
-	color: #eee;
-	text-align: center;
-}
-
-.current-score {
-	font-size: 1.5rem;
-}
-
-.high-score {
-	font-size: 1.2rem;
-} */
 
 .cards-container {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 1rem;
+	align-items: center;
+	justify-content: center;
+}
+
+.reset-btn-containr {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 5rem;
+}
+
+.restart-btn {
+	cursor: pointer;
+	outline: none;
+	border: 1px solid white;
+	color: white;
+	background: black;
+	padding: 0.25rem 0.5rem;
+	font-size: 1.3rem;
+}
+
+.restart-btn:hover {
+	border: 1px solid black;
+	color: black;
+	background: white;
 }
