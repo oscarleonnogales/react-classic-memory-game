@@ -125,6 +125,7 @@ function App() {
 	const [bikes, setBikes] = useState([]);
 	const [cardToMatch, setCardToMatch] = useState();
 	const [clickingEnabled, setClickingEnabled] = useState(true);
+	const [isGameOver, setIsGameOver] = useState(false);
 
 	useEffect(() => {
 		const bikesCopy = [];
@@ -137,22 +138,24 @@ function App() {
 		setBikes([...shuffleCards(bikesCopy)]);
 	}, []);
 
-	function handleResetClick() {
+	const handleResetClick = () => {
 		if (!clickingEnabled) return;
 		setPlayerOneScore(0);
 		setPlayerTwoScore(0);
+		setIsGameOver(false);
 		setPlayerOneTurn(true);
 		setCardToMatch(null);
 		unmatchAllCards();
 		setBikes((prevBikes) => [...shuffleCards(prevBikes)]);
-	}
+	};
 
-	function handleCardSelection(selectedID) {
+	const handleCardSelection = (selectedID) => {
 		if (!clickingEnabled) return;
 		const selectedCard = bikes.find((bike) => bike.id === selectedID);
 
 		if (!selectedCard.clickable) return;
 		selectedCard.clickable = false;
+		checkIsGameOver();
 
 		if (cardToMatch != null) {
 			if (areEqual(selectedCard, cardToMatch)) {
@@ -177,33 +180,45 @@ function App() {
 		} else {
 			setCardToMatch(selectedCard);
 		}
-	}
+	};
 
-	function areEqual(cardOne, cardTwo) {
+	const areEqual = (cardOne, cardTwo) => {
 		return cardOne.manufacturer === cardTwo.manufacturer && cardOne.model === cardTwo.model;
-	}
+	};
 
-	function unmatchAllCards() {
+	const unmatchAllCards = () => {
 		const bikesCopy = [...bikes];
 		bikesCopy.forEach((bike) => {
 			bike.clickable = true;
 			bike.flipped = true;
 		});
 		setBikes([...bikesCopy]);
-	}
+	};
 
-	function shuffleCards(cards) {
+	const shuffleCards = (cards) => {
 		let shuffledBikes = [...cards];
 		for (let i = shuffledBikes.length - 1; i > 0; i--) {
 			let randomIndex = Math.floor(Math.random() * (i + 1));
 			[shuffledBikes[i], shuffledBikes[randomIndex]] = [shuffledBikes[randomIndex], shuffledBikes[i]];
 		}
 		return shuffledBikes;
-	}
+	};
 
-	function handleClickingEnabledChange(bool) {
+	const handleClickingEnabledChange = (bool) => {
 		setClickingEnabled(bool);
-	}
+	};
+
+	const checkIsGameOver = () => {
+		let gameOver = true;
+		for (let i = 0; i < bikes.length; i++) {
+			console.log(bikes[i]);
+			if (bikes[i].clickable) {
+				gameOver = false;
+				break;
+			}
+		}
+		setIsGameOver(gameOver);
+	};
 
 	const gameContextValue = {
 		playerOneScore,
@@ -218,10 +233,10 @@ function App() {
 
 	return (
 		<GameContext.Provider value={gameContextValue}>
-			<GameHeader></GameHeader>
+			<GameHeader isGameOver={isGameOver}></GameHeader>
 			<CardContainer></CardContainer>
 			<div className="reset-btn-containr">
-				<button className="restart-btn" onClick={() => handleResetClick()}>
+				<button className="restart-btn" onClick={handleResetClick}>
 					Restart Game
 				</button>
 			</div>

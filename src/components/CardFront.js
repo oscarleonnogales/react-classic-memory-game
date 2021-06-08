@@ -3,18 +3,18 @@ import '../styles/CardFront.css';
 
 export default function CardFront({ bike }) {
 	return (
-		<div className="front" style={{ background: `${getBackground(bike.manufacturer)}` }}>
+		<div className="front" style={{ background: `${getBackgroundColor(bike.manufacturer)}` }}>
 			<figure>
 				<img src={bike.src} alt={`${bike.manufacturer} ${bike.model}`} className="card-image" />
 				<figcaption
-					style={{ color: `${getColor(bike.manufacturer)}` }}
+					style={{ color: `${getTextColor(bike.manufacturer)}` }}
 				>{`${bike.manufacturer} ${bike.model}`}</figcaption>
 			</figure>
 		</div>
 	);
 }
 
-function getBackground(manufacturer) {
+const getBackgroundColor = (manufacturer) => {
 	let color;
 	switch (manufacturer) {
 		case 'Honda':
@@ -37,9 +37,9 @@ function getBackground(manufacturer) {
 			break;
 	}
 	return color;
-}
+};
 
-function getColor(manufacturer) {
+const getTextColor = (manufacturer) => {
 	let color;
 	switch (manufacturer) {
 		case 'Suzuki':
@@ -49,8 +49,8 @@ function getColor(manufacturer) {
 			color = 'black';
 			break;
 		default:
-			color = 'white';
+			color = 'black';
 			break;
 	}
 	return color;
-}
+};
