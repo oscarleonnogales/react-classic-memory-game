@@ -35,3 +35,11 @@ body {
 	color: black;
 	background: white;
 }
+
+.winning-message {
+	margin-top: 0.5em;
+	text-align: center;
+	font-size: 3rem;
+	color: white;
+	font-weight: 500;
+}

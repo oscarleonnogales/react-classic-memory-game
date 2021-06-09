@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import GameHeader from './GameHeader';
 import CardContainer from './CardContainer';
+import WinningMessage from './WinningMessage';
 import '../styles/App.css';
 //images
 import drz400 from '../images/drz400.jpg';
@@ -223,6 +224,7 @@ function App() {
 	const gameContextValue = {
 		playerOneScore,
 		playerTwoScore,
+		isGameOver,
 		bikes,
 		handleResetClick,
 		handleCardSelection,
@@ -233,6 +235,7 @@ function App() {
 
 	return (
 		<GameContext.Provider value={gameContextValue}>
+			<WinningMessage />
 			<GameHeader isGameOver={isGameOver}></GameHeader>
 			<CardContainer></CardContainer>
 			<div className="reset-btn-containr">
